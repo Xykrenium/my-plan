@@ -1,0 +1,33 @@
+service: ImageUploaderService
+
+custom:
+  bucket: getting-started-lambda-example
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  stackName: imageUploader
+  iam.role.statements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        - "arn:aws:s3:::${self:custom.bucket}/*"
+# The `functions` block defines what code to deploy
+functions:
+  UploadImage:
+    handler: uploadImage.handler
+    events:
+      - http: 
+        path: upload
+        method: post
+        cors: true
+    environment:
+        Bucket: ${self:custom.bucket}
+resources:
+  Resources:
+    StorageBucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:custom.bucket}
