@@ -2,7 +2,7 @@ service: ImageUploaderService
 
 custom:
   bucket: getting-started-lambda-example
-# The `provider` block defines where your service will be deployed
+# The `provider` block defines where your service will be deployed.
 provider:
   name: aws
   runtime: nodejs14.x
@@ -14,7 +14,7 @@ provider:
         - "s3:PutObject"
       Resource:
         - "arn:aws:s3:::${self:custom.bucket}/*"
-# The `functions` block defines what code to deploy
+# The `functions` block defines what code to deploy.
 functions:
   UploadImage:
     handler: uploadImage.handler
